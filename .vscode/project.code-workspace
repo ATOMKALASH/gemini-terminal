@@ -1,8 +1,79 @@
 {
 	"folders": [
 		{
+			"name": "Gemini Terminal",
 			"path": ".."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"workbench.editor.restoreViewState": true,
+		"workbench.editor.enablePreview": false,
+		"workbench.editor.pinnedTabSizing": "shrink",
+		"workbench.editor.wrapTabs": true,
+		"window.restoreWindows": "all",
+		"files.hotExit": "onExitAndWindowClose",
+		"files.exclude": {
+			"**/node_modules": true,
+			"**/dist": true,
+			"**/.git": true,
+			"**/logs": true,
+			"**/*.log": true
+		},
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/dist": true,
+			"**/logs": true
+		},
+		"files.associations": {
+			"*.sass": "sass",
+			"*.scss": "scss"
+		},
+		"emmet.includeLanguages": {
+			"javascript": "javascriptreact"
+		},
+		"typescript.preferences.includePackageJsonAutoImports": "auto",
+		"javascript.preferences.includePackageJsonAutoImports": "auto"
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.vscode-electron",
+			"syler.sass-indented",
+			"bradlc.vscode-tailwindcss",
+			"esbenp.prettier-vscode",
+			"ms-vscode.vscode-json",
+			"formulahendry.auto-rename-tag",
+			"christian-kohler.path-intellisense"
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch Electron",
+				"type": "node",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+				"windows": {
+					"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+				},
+				"args": ["."],
+				"outputCapture": "std",
+				"console": "integratedTerminal"
+			},
+			{
+				"name": "Debug Main Process",
+				"type": "node",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+				"windows": {
+					"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+				},
+				"args": [".", "--inspect=5858"],
+				"outputCapture": "std",
+				"console": "integratedTerminal"
+			}
+		]
+	}
 }

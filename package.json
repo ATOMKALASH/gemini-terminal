@@ -1,0 +1,97 @@
+{
+  "name": "gemini-terminal",
+  "version": "1.0.0",
+  "description": "AI Enhanced Smart Terminal",
+  "main": "source/main/main.js",
+
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run sass:watch\" \"nodemon --exec \\\"electron . --dev\\\" --watch source/ --ext js,html,css,sass\"",
+    "build": "npm run sass:build && electron-builder",
+    "build:win": "npm run sass:build && electron-builder --win",
+    "build:mac": "npm run sass:build && electron-builder --mac",
+    "build:linux": "npm run sass:build && electron-builder --linux",
+    "pack": "npm run sass:build && electron-builder --dir",
+    "dist": "npm run sass:build && electron-builder --publish=never",
+    "postinstall": "electron-builder install-app-deps",
+    "sass:watch": "sass --watch source/renderer/sass:source/renderer/sass/css --style=compressed",
+    "sass:build": "sass source/renderer/sass:source/renderer/sass/css --style=compressed"
+  },
+
+  "keywords": [
+    "electron",
+    "terminal",
+    "gemini",
+    "shell"
+  ],
+
+  "author": "Dustin Angeletti",
+  "license": "MIT",
+
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "sass": "^1.81.0",
+    "nodemon": "^3.1.9",
+    "concurrently": "^9.1.0"
+  },
+
+  "dependencies": {
+    "xterm": "^5.6.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/addon-web-links": "^0.11.0",
+    "@xterm/addon-search": "^0.16.0",
+    "@xterm/addon-unicode11": "^0.8.0",
+    "node-pty": "^1.1.0",
+    "electron-timber": "^0.5.1",
+    "dotenv": "^16.4.7"
+  },
+
+  "nodemonConfig": {
+    "ignore": [
+      "node_modules/",
+      "dist/",
+      "source/renderer/sass/css/",
+      "*.log"
+    ],
+
+    "delay": 1000
+  },
+
+  "build": {
+    "appId": "com.angelettidev.gemini-terminal",
+    "productName": "Gemini Terminal",
+
+    "directories": {
+      "output": "dist"
+    },
+
+    "files": [
+      "source/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  },
+
+  "homepage": ".",
+  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/gemini-terminal.git"
+  }
+}
