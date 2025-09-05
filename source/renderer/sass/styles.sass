@@ -31,53 +31,76 @@ html, body
   display: flex
   flex-direction: column
 
-// Header styles
-.app-header
+// Custom titlebar styles
+.custom-titlebar
   background-color: $surface-color
   border-bottom: 1px solid $border-color
-  padding: 0
-  user-select: none
-  -webkit-app-region: drag
-
-.title-bar
+  height: 32px
   display: flex
   justify-content: space-between
   align-items: center
-  height: 32px
-  padding: 0 16px
+  user-select: none
+  position: relative
+  z-index: 1000
 
-.title-bar h1
+.titlebar-drag-region
+  flex: 1
+  height: 100%
+  display: flex
+  align-items: center
+  padding-left: 16px
+  -webkit-app-region: drag
+
+.app-title
+  display: flex
+  align-items: center
+  gap: 8px
   font-size: 14px
   font-weight: 600
   color: $text-primary
-  margin: 0
+
+.app-icon
+  color: $primary-color
+  flex-shrink: 0
 
 .window-controls
   display: flex
-  gap: 8px
+  height: 100%
   -webkit-app-region: no-drag
 
 .control-btn
-  width: 24px
-  height: 24px
+  width: 46px
+  height: 32px
   border: none
   background: transparent
   color: $text-secondary
   cursor: pointer
-  border-radius: 4px
   display: flex
   align-items: center
   justify-content: center
-  font-size: 12px
-  transition: all 0.2s ease
+  transition: all 0.15s ease
+  position: relative
 
   &:hover
     background-color: rgba(255, 255, 255, 0.1)
     color: $text-primary
 
+  &.minimize:hover
+    background-color: rgba(255, 255, 255, 0.1)
+
+  &.maximize:hover
+    background-color: rgba(255, 255, 255, 0.1)
+
   &.close:hover
-    background-color: $error-color
+    background-color: #e81123
     color: white
+
+  svg
+    pointer-events: none
+
+// Header styles (now empty since titlebar is separate)
+.app-header
+  // Remove previous styles as titlebar is now separate
 
 // Main content area
 .app-main

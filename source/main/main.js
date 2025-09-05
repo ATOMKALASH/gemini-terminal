@@ -24,8 +24,9 @@ class MainWindow {
       minWidth: 800,
       minHeight: 600,
       show: false, // Don't show until ready-to-show
+      frame: false, // Remove default frame for custom titlebar
       icon: path.join(__dirname, '..', 'assets', 'icons', 'icon.png'),
-      titleBarStyle: 'default',
+      titleBarStyle: 'hidden',
       webPreferences: {
         // Security: Enable context isolation
         contextIsolation: true,
@@ -131,6 +132,32 @@ ipcMain.handle('platform-info', () => {
     arch: process.arch,
     version: process.version
   };
+});
+
+// Window control handlers
+ipcMain.handle('window-minimize', () => {
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+  if (focusedWindow) {
+    focusedWindow.minimize();
+  }
+});
+
+ipcMain.handle('window-maximize', () => {
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+  if (focusedWindow) {
+    if (focusedWindow.isMaximized()) {
+      focusedWindow.unmaximize();
+    } else {
+      focusedWindow.maximize();
+    }
+  }
+});
+
+ipcMain.handle('window-close', () => {
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+  if (focusedWindow) {
+    focusedWindow.close();
+  }
 });
 
 // Handle app certificate errors (for development)

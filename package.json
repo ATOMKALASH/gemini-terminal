@@ -7,7 +7,7 @@
 
   "scripts": {
     "start": "electron .",
-    "dev": "concurrently \"npm run sass:watch\" \"nodemon --exec \\\"electron . --dev\\\" --watch source/ --ext js,html,css,sass\"",
+    "dev": "concurrently \"npm run sass:watch\" \"nodemon --exec \\\"electron . --dev\\\" --watch source/ --ext js,html,sass\"",
     "build": "npm run sass:build && electron-builder",
     "build:win": "npm run sass:build && electron-builder --win",
     "build:mac": "npm run sass:build && electron-builder --mac",
@@ -15,8 +15,8 @@
     "pack": "npm run sass:build && electron-builder --dir",
     "dist": "npm run sass:build && electron-builder --publish=never",
     "postinstall": "electron-builder install-app-deps",
-    "sass:watch": "sass --watch source/renderer/sass:source/renderer/sass/css --style=compressed",
-    "sass:build": "sass source/renderer/sass:source/renderer/sass/css --style=compressed"
+    "sass:watch": "sass --watch source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed",
+    "sass:build": "sass source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed"
   },
 
   "keywords": [
@@ -31,7 +31,7 @@
 
   "devDependencies": {
     "electron": "^38.0.0",
-    "electron-builder": "^26.0.12",
+    "electron-builder": "^26.0.20",
     "electron-reload": "^2.0.0-alpha.1",
     "sass": "^1.92.0",
     "nodemon": "^3.1.10",
@@ -39,12 +39,6 @@
   },
 
   "dependencies": {
-    "xterm": "^5.3.0",
-    "@xterm/addon-fit": "^0.10.0",
-    "@xterm/addon-web-links": "^0.11.0",
-    "@xterm/addon-search": "^0.15.0",
-    "@xterm/addon-unicode11": "^0.8.0",
-    "node-pty": "^1.0.0",
     "electron-timber": "^0.5.1",
     "dotenv": "^16.4.7"
   },

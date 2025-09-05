@@ -9,16 +9,36 @@
 </head>
 <body>
     <div id="app">
-        <header class="app-header">
-            <div class="title-bar">
-                <h1>Gemini Terminal</h1>
-                <div class="window-controls">
-                    <button id="minimize-btn" class="control-btn" title="Minimize">−</button>
-                    <button id="maximize-btn" class="control-btn" title="Maximize">□</button>
-                    <button id="close-btn" class="control-btn close" title="Close">×</button>
+        <div class="custom-titlebar">
+            <div class="titlebar-drag-region">
+                <div class="app-title">
+                    <svg class="app-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Gemini Terminal</span>
                 </div>
             </div>
-        </header>
+            <div class="window-controls">
+                <button id="minimize-btn" class="control-btn minimize" title="Minimize">
+                    <svg width="12" height="12" viewBox="0 0 12 12">
+                        <rect x="2" y="5" width="8" height="2" fill="currentColor"/>
+                    </svg>
+                </button>
+                <button id="maximize-btn" class="control-btn maximize" title="Maximize">
+                    <svg width="12" height="12" viewBox="0 0 12 12">
+                        <rect x="2" y="2" width="8" height="8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </button>
+                <button id="close-btn" class="control-btn close" title="Close">
+                    <svg width="12" height="12" viewBox="0 0 12 12">
+                        <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <header class="app-header">
 
         <main class="app-main">
             <div class="welcome-screen">
