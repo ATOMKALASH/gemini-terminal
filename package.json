@@ -15,8 +15,8 @@
     "pack": "npm run sass:build && electron-builder --dir",
     "dist": "npm run sass:build && electron-builder --publish=never",
     "postinstall": "electron-builder install-app-deps",
-    "sass:watch": "sass --watch source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed",
-    "sass:build": "sass source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed"
+    "sass:watch": "sass --watch source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed --no-source-map",
+    "sass:build": "sass source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed --no-source-map"
   },
 
   "keywords": [

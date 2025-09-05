@@ -6,6 +6,7 @@ class GeminiTerminalApp {
         this.isReady = false;
         this.terminals = new Map();
         this.activeTerminal = null;
+        this.tabCounter = 0;
         
         this.init();
     }
@@ -63,6 +64,12 @@ class GeminiTerminalApp {
             newTerminalBtn.addEventListener('click', () => this.createNewTerminal());
         }
 
+        // New Tab button
+        const newTabBtn = document.getElementById('new-tab-btn');
+        if (newTabBtn) {
+            newTabBtn.addEventListener('click', () => this.createNewTab());
+        }
+
         // Settings button
         const settingsBtn = document.getElementById('settings-btn');
         if (settingsBtn) {
@@ -108,10 +115,18 @@ class GeminiTerminalApp {
     }
 
     handleKeyboardShortcuts(event) {
-        // Ctrl+Shift+T: New Terminal
+        // Ctrl+Shift+T: New Terminal Tab
         if (event.ctrlKey && event.shiftKey && event.key === 'T') {
             event.preventDefault();
-            this.createNewTerminal();
+            this.createNewTab();
+        }
+
+        // Ctrl+W: Close current tab
+        if (event.ctrlKey && event.key === 'w') {
+            event.preventDefault();
+            if (this.activeTerminal) {
+                this.closeTab(this.activeTerminal);
+            }
         }
 
         // Ctrl+Shift+I: Toggle DevTools (handled by main process)
@@ -140,16 +155,259 @@ class GeminiTerminalApp {
             
             if (terminalContainer) {
                 terminalContainer.style.display = 'block';
-                terminalContainer.innerHTML = '<div class="terminal-placeholder">Terminal functionality will be implemented here</div>';
             }
 
-            // Update status
-            this.updateStatus('Terminal created');
+            // Create first tab
+            this.createNewTab();
             
         } catch (error) {
             console.error('Error creating terminal:', error);
             this.showError('Failed to create terminal');
         }
+    }
+
+    createNewTab() {
+        console.log('Creating new tab...');
+        
+        try {
+            this.tabCounter++;
+            const tabId = `terminal-${this.tabCounter}`;
+            const tabName = `Terminal ${this.tabCounter.toString().padStart(2, '0')}`;
+            
+            // Create tab element
+            const tab = this.createTabElement(tabId, tabName);
+            
+            // Create terminal pane
+            const pane = this.createTerminalPane(tabId);
+            
+            // Add to containers
+            const tabsContainer = document.getElementById('tabs-container');
+            const terminalContent = document.getElementById('terminal-content');
+            
+            if (tabsContainer && terminalContent) {
+                tabsContainer.appendChild(tab);
+                terminalContent.appendChild(pane);
+                
+                // Switch to new tab
+                this.switchToTab(tabId);
+                
+                // Store terminal reference
+                this.terminals.set(tabId, {
+                    id: tabId,
+                    name: tabName,
+                    element: pane,
+                    tab: tab
+                });
+                
+                this.updateStatus(`Created ${tabName}`);
+            }
+            
+        } catch (error) {
+            console.error('Error creating tab:', error);
+            this.showError('Failed to create tab');
+        }
+    }
+
+    createTabElement(tabId, tabName) {
+        const tab = document.createElement('button');
+        tab.className = 'terminal-tab';
+        tab.dataset.tabId = tabId;
+        
+        tab.innerHTML = `
+            <span class="tab-title">${tabName}</span>
+            <button class="tab-close" title="Close tab">
+                <svg width="12" height="12" viewBox="0 0 12 12">
+                    <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+            </button>
+        `;
+        
+        // Add event listeners
+        tab.addEventListener('click', (e) => {
+            if (!e.target.closest('.tab-close')) {
+                this.switchToTab(tabId);
+            }
+        });
+        
+        const closeBtn = tab.querySelector('.tab-close');
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.closeTab(tabId);
+        });
+        
+        return tab;
+    }
+
+    createTerminalPane(tabId) {
+        const pane = document.createElement('div');
+        pane.className = 'terminal-pane';
+        pane.dataset.tabId = tabId;
+        
+        pane.innerHTML = `
+            <div class="terminal-placeholder">
+                Terminal functionality will be implemented here
+                <br><br>
+                <small>Tab ID: ${tabId}</small>
+            </div>
+        `;
+        
+        return pane;
+    }
+
+    switchToTab(tabId) {
+        // Remove active class from all tabs and panes
+        document.querySelectorAll('.terminal-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        document.querySelectorAll('.terminal-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        
+        // Add active class to selected tab and pane
+        const selectedTab = document.querySelector(`[data-tab-id="${tabId}"]`);
+        const selectedPane = document.querySelector(`.terminal-pane[data-tab-id="${tabId}"]`);
+        
+        if (selectedTab && selectedPane) {
+            selectedTab.classList.add('active');
+            selectedPane.classList.add('active');
+            this.activeTerminal = tabId;
+            
+            const terminal = this.terminals.get(tabId);
+            if (terminal) {
+                this.updateStatus(`Active: ${terminal.name}`);
+            }
+        }
+    }
+
+    closeTab(tabId) {
+        const terminal = this.terminals.get(tabId);
+        if (!terminal) return;
+        
+        // Remove elements
+        terminal.tab.remove();
+        terminal.element.remove();
+        
+        // Remove from terminals map
+        this.terminals.delete(tabId);
+        
+        // Renumber remaining tabs
+        this.renumberTabs();
+        
+        // If this was the active terminal, switch to another tab
+        if (this.activeTerminal === tabId) {
+            const remainingTabs = Array.from(this.terminals.keys());
+            if (remainingTabs.length > 0) {
+                this.switchToTab(remainingTabs[0]);
+            } else {
+                this.activeTerminal = null;
+                this.updateStatus('No active terminals');
+                
+                // Show welcome screen if no tabs left
+                const welcomeScreen = document.querySelector('.welcome-screen');
+                const terminalContainer = document.getElementById('terminal-container');
+                
+                if (welcomeScreen && terminalContainer) {
+                    welcomeScreen.style.display = 'flex';
+                    terminalContainer.style.display = 'none';
+                }
+            }
+        }
+        
+        this.updateStatus(`Closed ${terminal.name}`);
+    }
+
+    renumberTabs() {
+        const tabElements = document.querySelectorAll('.terminal-tab');
+        const paneElements = document.querySelectorAll('.terminal-pane');
+        
+        // Create new terminals map with renumbered entries
+        const newTerminals = new Map();
+        let counter = 1;
+        
+        tabElements.forEach((tabElement, index) => {
+            const oldTabId = tabElement.dataset.tabId;
+            const oldTerminal = this.terminals.get(oldTabId);
+            
+            if (oldTerminal) {
+                // Create new IDs and names
+                const newTabId = `terminal-${counter}`;
+                const newTabName = `Terminal ${counter.toString().padStart(2, '0')}`;
+                
+                // Update tab element
+                tabElement.dataset.tabId = newTabId;
+                const tabTitle = tabElement.querySelector('.tab-title');
+                if (tabTitle) {
+                    tabTitle.textContent = newTabName;
+                }
+                
+                // Update pane element
+                const paneElement = paneElements[index];
+                if (paneElement) {
+                    paneElement.dataset.tabId = newTabId;
+                    
+                    // Update placeholder text to show new tab ID
+                    const placeholder = paneElement.querySelector('.terminal-placeholder small');
+                    if (placeholder) {
+                        placeholder.textContent = `Tab ID: ${newTabId}`;
+                    }
+                }
+                
+                // Update close button event listener
+                const closeBtn = tabElement.querySelector('.tab-close');
+                if (closeBtn) {
+                    // Remove old event listener by cloning the element
+                    const newCloseBtn = closeBtn.cloneNode(true);
+                    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+                    
+                    // Add new event listener with correct tabId
+                    newCloseBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.closeTab(newTabId);
+                    });
+                }
+                
+                // Update tab click event listener
+                const newTabElement = tabElement.cloneNode(true);
+                tabElement.parentNode.replaceChild(newTabElement, tabElement);
+                
+                newTabElement.addEventListener('click', (e) => {
+                    if (!e.target.closest('.tab-close')) {
+                        this.switchToTab(newTabId);
+                    }
+                });
+                
+                // Re-add close button listener to the cloned element
+                const newCloseBtn2 = newTabElement.querySelector('.tab-close');
+                if (newCloseBtn2) {
+                    newCloseBtn2.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.closeTab(newTabId);
+                    });
+                }
+                
+                // Store in new terminals map
+                newTerminals.set(newTabId, {
+                    id: newTabId,
+                    name: newTabName,
+                    element: paneElement,
+                    tab: newTabElement
+                });
+                
+                // Update active terminal reference if needed
+                if (this.activeTerminal === oldTabId) {
+                    this.activeTerminal = newTabId;
+                }
+                
+                counter++;
+            }
+        });
+        
+        // Replace terminals map
+        this.terminals = newTerminals;
+        
+        // Update tab counter for next new tab
+        this.tabCounter = counter - 1;
     }
 
     openSettings() {

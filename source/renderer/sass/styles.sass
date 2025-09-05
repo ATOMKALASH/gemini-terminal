@@ -209,10 +209,122 @@ html, body
 .terminal-container
   flex: 1
   background-color: $secondary-color
-  margin: 16px
-  border-radius: 8px
-  border: 1px solid $border-color
+  margin: 0
+  border-radius: 0
+  border: none
   overflow: hidden
+  display: flex
+  flex-direction: column
+
+// Tab bar styles
+.tab-bar
+  background-color: $surface-color
+  border-bottom: 1px solid $border-color
+  padding: 0
+  user-select: none
+
+.tabs-wrapper
+  display: flex
+  align-items: center
+  height: 36px
+
+.tabs-container
+  display: flex
+  flex: 1
+  overflow-x: auto
+  scrollbar-width: none
+  -ms-overflow-style: none
+
+  &::-webkit-scrollbar
+    display: none
+
+.terminal-tab
+  display: flex
+  align-items: center
+  gap: 8px
+  padding: 8px 16px
+  background-color: transparent
+  border: none
+  border-right: 1px solid $border-color
+  color: $text-secondary
+  cursor: pointer
+  font-size: 13px
+  font-weight: 500
+  transition: all 0.2s ease
+  white-space: nowrap
+  min-width: 120px
+  max-width: 200px
+  position: relative
+
+  &:hover
+    background-color: rgba(255, 255, 255, 0.05)
+    color: $text-primary
+
+  &.active
+    background-color: $secondary-color
+    color: $text-primary
+    border-bottom: 2px solid $primary-color
+
+  .tab-title
+    flex: 1
+    text-align: left
+    overflow: hidden
+    text-overflow: ellipsis
+
+  .tab-close
+    width: 16px
+    height: 16px
+    border: none
+    background: transparent
+    color: $text-secondary
+    cursor: pointer
+    border-radius: 2px
+    display: flex
+    align-items: center
+    justify-content: center
+    opacity: 0
+    transition: all 0.2s ease
+
+    &:hover
+      background-color: rgba(255, 255, 255, 0.1)
+      color: $text-primary
+
+  &:hover .tab-close, &.active .tab-close
+    opacity: 1
+
+.new-tab-btn
+  width: 36px
+  height: 36px
+  border: none
+  background: transparent
+  color: $text-secondary
+  cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: center
+  transition: all 0.2s ease
+  border-left: 1px solid $border-color
+
+  &:hover
+    background-color: rgba(255, 255, 255, 0.1)
+    color: $text-primary
+
+// Terminal content area
+.terminal-content
+  flex: 1
+  display: flex
+  flex-direction: column
+  overflow: hidden
+
+.terminal-pane
+  flex: 1
+  background-color: $secondary-color
+  display: none
+  padding: 16px
+
+  &.active
+    display: flex
+    flex-direction: column
 
 .terminal-placeholder
   display: flex
