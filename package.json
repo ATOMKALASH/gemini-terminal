@@ -3,7 +3,7 @@
   "name": "gemini-terminal",
   "version": "1.0.0",
   "description": "AI Enhanced Smart Terminal",
-  "main": "source/main/main.js",
+  "main": "source/scripts/main.js",
 
   "scripts": {
     "start": "npm run sass:build && electron .",
@@ -15,8 +15,8 @@
     "pack": "npm run sass:build && electron-builder --dir",
     "dist": "npm run sass:build && electron-builder --publish=never",
     "postinstall": "electron-builder install-app-deps",
-    "sass:watch": "sass --watch source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed --no-source-map",
-    "sass:build": "sass source/renderer/sass/styles.sass:source/renderer/sass/css/styles.css --style=compressed --no-source-map"
+    "sass:watch": "sass --watch source/styles/sass/styles.sass:source/styles/css/styles.css --style=compressed --no-source-map",
+    "sass:build": "sass source/styles/sass/styles.sass:source/styles/css/styles.css --style=compressed --no-source-map"
   },
 
   "keywords": [

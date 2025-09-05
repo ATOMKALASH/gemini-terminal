@@ -39,10 +39,10 @@ class MainWindow {
 
     // Load the app
     const startUrl = isDev 
-      ? 'file://' + path.join(__dirname, '..', 'renderer', 'index.html')
-      : 'file://' + path.join(__dirname, '..', 'renderer', 'index.html');
+      ? 'file://' + path.join(__dirname, '..', 'index.html')
+      : 'file://' + path.join(__dirname, '..', 'index.html');
     
-    this.window.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
+    this.window.loadFile(path.join(__dirname, '..', 'index.html'));
 
     // Show window when ready to prevent visual flash
     this.window.once('ready-to-show', () => {
