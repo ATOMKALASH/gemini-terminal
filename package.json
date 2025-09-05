@@ -32,6 +32,7 @@
   "devDependencies": {
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8",
+    "electron-reload": "^2.0.0-alpha.1",
     "sass": "^1.81.0",
     "nodemon": "^3.1.9",
     "concurrently": "^9.1.0"
