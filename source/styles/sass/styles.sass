@@ -1,6 +1,8 @@
 // Gemini Terminal Styles
 // Modern, clean design with dark theme
 
+@use "sass:color"
+
 // Variables
 $primary-color: #007acc
 $secondary-color: #1e1e1e
@@ -48,6 +50,7 @@ html, body
   height: 100%
   display: flex
   align-items: center
+  justify-content: space-between
   padding-left: 16px
   -webkit-app-region: drag
 
@@ -62,6 +65,34 @@ html, body
 .app-icon
   color: $primary-color
   flex-shrink: 0
+
+.titlebar-actions
+  display: flex
+  align-items: center
+  gap: 4px
+  padding-right: 8px
+  -webkit-app-region: no-drag
+
+.titlebar-btn
+  width: 28px
+  height: 28px
+  border: none
+  background: transparent
+  color: $text-secondary
+  cursor: pointer
+  display: flex
+  align-items: center
+  justify-content: center
+  border-radius: 4px
+  transition: all 0.15s ease
+  position: relative
+
+  &:hover
+    background-color: rgba(255, 255, 255, 0.1)
+    color: $text-primary
+
+  svg
+    pointer-events: none
 
 .window-controls
   display: flex
@@ -108,10 +139,16 @@ html, body
   display: flex
   flex-direction: column
   overflow: hidden
+  position: relative
+  height: calc(100vh - 32px - 24px)
 
 // Welcome screen
 .welcome-screen
-  flex: 1
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
   display: flex
   align-items: center
   justify-content: center
@@ -192,7 +229,7 @@ html, body
   color: white
 
   &:hover
-    background-color: darken($primary-color, 10%)
+    background-color: color.adjust($primary-color, $lightness: -10%)
     transform: translateY(-1px)
     box-shadow: 0 4px 12px rgba(0, 122, 204, 0.3)
 
@@ -207,7 +244,11 @@ html, body
 
 // Terminal container
 .terminal-container
-  flex: 1
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
   background-color: $secondary-color
   margin: 0
   border-radius: 0
@@ -292,22 +333,6 @@ html, body
   &:hover .tab-close, &.active .tab-close
     opacity: 1
 
-.new-tab-btn
-  width: 36px
-  height: 36px
-  border: none
-  background: transparent
-  color: $text-secondary
-  cursor: pointer
-  display: flex
-  align-items: center
-  justify-content: center
-  transition: all 0.2s ease
-  border-left: 1px solid $border-color
-
-  &:hover
-    background-color: rgba(255, 255, 255, 0.1)
-    color: $text-primary
 
 // Terminal content area
 .terminal-content
@@ -337,9 +362,14 @@ html, body
 
 // Footer styles
 .app-footer
+  position: fixed
+  bottom: 0
+  left: 0
+  right: 0
   background-color: $surface-color
   border-top: 1px solid $border-color
   padding: 0
+  z-index: 1000
 
 .status-bar
   display: flex

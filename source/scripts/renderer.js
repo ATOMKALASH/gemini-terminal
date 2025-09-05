@@ -64,10 +64,11 @@ class GeminiTerminalApp {
             newTerminalBtn.addEventListener('click', () => this.createNewTerminal());
         }
 
-        // New Tab button
-        const newTabBtn = document.getElementById('new-tab-btn');
-        if (newTabBtn) {
-            newTabBtn.addEventListener('click', () => this.createNewTab());
+
+        // Account button
+        const accountBtn = document.getElementById('account-btn');
+        if (accountBtn) {
+            accountBtn.addEventListener('click', () => this.openAccount());
         }
 
         // Settings button
@@ -408,6 +409,11 @@ class GeminiTerminalApp {
         
         // Update tab counter for next new tab
         this.tabCounter = counter - 1;
+    }
+
+    openAccount() {
+        console.log('Opening account...');
+        this.showInfo('Account panel will be implemented in future versions');
     }
 
     openSettings() {
