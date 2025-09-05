@@ -2,13 +2,7 @@ const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
-// Enable live reload for Electron in development
-if (isDev) {
-  require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, '..', '..', 'node_modules', '.bin', 'electron'),
-    hardResetMethod: 'exit'
-  });
-}
+// Hot reload removed - use npm run dev for SASS watching only
 
 class MainWindow {
   constructor() {

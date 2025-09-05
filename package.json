@@ -6,8 +6,8 @@
   "main": "source/main/main.js",
 
   "scripts": {
-    "start": "electron .",
-    "dev": "concurrently \"npm run sass:watch\" \"nodemon --exec \\\"electron . --dev\\\" --watch source/ --ext js,html,sass\"",
+    "start": "npm run sass:build && electron .",
+    "dev": "npm run sass:watch",
     "build": "npm run sass:build && electron-builder",
     "build:win": "npm run sass:build && electron-builder --win",
     "build:mac": "npm run sass:build && electron-builder --mac",
@@ -32,10 +32,7 @@
   "devDependencies": {
     "electron": "^38.0.0",
     "electron-builder": "^26.0.20",
-    "electron-reload": "^2.0.0-alpha.1",
-    "sass": "^1.92.0",
-    "nodemon": "^3.1.10",
-    "concurrently": "^9.2.1"
+    "sass": "^1.92.0"
   },
 
   "dependencies": {
@@ -43,16 +40,6 @@
     "dotenv": "^16.4.7"
   },
 
-  "nodemonConfig": {
-    "ignore": [
-      "node_modules/",
-      "dist/",
-      "source/renderer/sass/css/",
-      "*.log"
-    ],
-
-    "delay": 1000
-  },
 
   "build": {
     "appId": "com.angelettidev.gemini-terminal",
